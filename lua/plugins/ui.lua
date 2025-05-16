@@ -40,7 +40,6 @@ return {
     'nvim-telescope/telescope.nvim',
     dependencies = {
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-      { 'nvim-telescope/telescope-dap.nvim' },
       {
         'jmbuhr/telescope-zotero.nvim',
         dev = false,
@@ -159,7 +158,6 @@ return {
         },
       }
       telescope.load_extension 'fzf'
-      telescope.load_extension 'dap'
       telescope.load_extension 'zotero'
     end,
   },

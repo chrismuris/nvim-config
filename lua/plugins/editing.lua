@@ -82,31 +82,6 @@ return {
     end,
   },
 
-  { -- generate docstrings
-    'danymat/neogen',
-    cmd = { 'Neogen' },
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    config = true,
-  },
-
-  {
-    'chrishrb/gx.nvim',
-    enabled = false,
-    keys = { { 'gx', '<cmd>Browse<cr>', mode = { 'n', 'x' } } },
-    cmd = { 'Browse' },
-    init = function()
-      vim.g.netrw_nogx = 1 -- disable netrw gx
-    end,
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    submodules = false, -- not needed, submodules are required only for tests
-    opts = {
-      handler_options = {
-        -- you can select between google, bing, duckduckgo, and ecosia
-        search_engine = 'duckduckgo',
-      },
-    },
-  },
-
   {
     'folke/flash.nvim',
     enabled = false,

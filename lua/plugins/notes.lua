@@ -2,23 +2,6 @@
 
 return {
   {
-    'nvim-neorg/neorg',
-    enabled = false,
-    config = function()
-      require('neorg').setup {}
-    end,
-  },
-
-  {
-    'jakewvincent/mkdnflow.nvim',
-    enabled = false,
-    config = function()
-      local mkdnflow = require 'mkdnflow'
-      mkdnflow.setup {}
-    end,
-  },
-
-  {
     'obsidian-nvim/obsidian.nvim',
     enabled = true,
     lazy = false,
@@ -48,7 +31,7 @@ return {
         workspaces = {
           {
             name = 'notes',
-            path = '~/notes',
+            path = '~/Dropbox/work_vault/',
           },
         },
         -- Optional, for templates (see below).
@@ -58,18 +41,6 @@ return {
           time_format = '%H:%M',
           -- A map for custom variables, the key should be the variable and the value a function
           substitutions = {},
-        },
-        daily_notes = {
-          -- Optional, if you keep daily notes in a separate directory.
-          -- folder = "dailies",
-          -- Optional, if you want to change the date format for the ID of daily notes.
-          -- date_format = "%Y-%m-%d",
-          -- Optional, if you want to change the date format of the default alias of daily notes.
-          -- alias_format = "%B %-d, %Y",
-          -- Optional, default tags to add to each new daily note created.
-          -- default_tags = { "daily-notes" },
-          -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-          template = 'template-daily.md',
         },
         -- Optional, customize how names/IDs for new notes are created.
         note_id_func = function(title)
