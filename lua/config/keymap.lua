@@ -56,9 +56,6 @@ nmap('Q', '<Nop>')
 --- If an R terminal has been opend, this is in r_mode
 --- and will handle python code via reticulate when sent
 --- from a python chunk.
---- TODO: incorpoarate this into quarto-nvim plugin
---- such that QuartoSend functions get the same capabilities
---- TODO: figure out bracketed paste for reticulate python repl.
 local function send_cell()
   local has_molten, molten_status = pcall(require, 'molten.status')
   local molten_works = false

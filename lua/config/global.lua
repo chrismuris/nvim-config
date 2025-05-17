@@ -17,7 +17,6 @@ vim.o.fillchars = 'eob: '
 -- more opinionated
 vim.opt.number = true -- show linenumbers
 vim.opt.mouse = 'a' -- enable mouse
-vim.opt.mousefocus = true
 vim.opt.clipboard:append 'unnamedplus' -- use system clipboard
 
 vim.opt.timeoutlen = 400 -- until which-key pops up
@@ -124,7 +123,6 @@ vim.diagnostic.config {
   signs = true,
 }
 
--- add new filetypes
 vim.filetype.add {
   extension = {
     ojs = 'javascript',
@@ -133,6 +131,3 @@ vim.filetype.add {
   },
 }
 
--- additional builtin vim packages
--- filter quickfix list with Cfilter
-vim.cmd.packadd 'cfilter'

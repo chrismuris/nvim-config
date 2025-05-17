@@ -7,13 +7,11 @@ return {
     end,
   },
 
-  { -- new completion plugin
+  { -- completion plugin
     'saghen/blink.cmp',
     enabled = true,
     version = '*',
     dev = false,
-    -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-    -- build = 'cargo build --release',
     lazy = false,
     dependencies = {
       { 'rafamadriz/friendly-snippets' },
@@ -97,7 +95,7 @@ return {
 
   { -- gh copilot
     'zbirenbaum/copilot.lua',
-    enabled = true,
+    enabled = false,
     config = function()
       require('copilot').setup {
         suggestion = {
