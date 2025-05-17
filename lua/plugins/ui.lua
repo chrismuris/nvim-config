@@ -1,27 +1,5 @@
 return {
 
-  ---@module "neominimap.config.meta"
-  {
-    'Isrothy/neominimap.nvim',
-    version = 'v3.*.*',
-    enabled = true,
-    dependencies = {
-      'lewis6991/gitsigns.nvim',
-    },
-    -- Optional
-    init = function()
-      -- The following options are recommended when layout == "float"
-      vim.opt.wrap = false
-      vim.opt.sidescrolloff = 36 -- Set a large value
-
-      --- Put your configuration here
-      ---@type Neominimap.UserConfig
-      vim.g.neominimap = {
-        auto_enable = false,
-      }
-    end,
-  },
-
   -- telescope
   -- a nice seletion UI also to find and open files
   {
@@ -179,7 +157,7 @@ return {
 
   { -- filetree
     'nvim-tree/nvim-tree.lua',
-    enabled = true,
+    enabled = false,
     keys = {
       { '<leader>ft', ':NvimTreeToggle<cr>', desc = 'toggle file [t]ree' },
     },
@@ -204,7 +182,7 @@ return {
   -- or a different filetree
   {
     'nvim-neo-tree/neo-tree.nvim',
-    enabled = false,
+    enabled = true,
     branch = 'v3.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -249,47 +227,13 @@ return {
     },
   },
 
-  { 'echasnovski/mini.files', 
-    enabled = true,
-    version = '*'
-  },
-
-  { -- or show symbols in the current file as breadcrumbs
-    'Bekaboo/dropbar.nvim',
-    dependencies = {
-      'nvim-telescope/telescope-fzf-native.nvim',
-    },
-    config = function()
-      -- turn off global option for windowline
-      vim.opt.winbar = nil
-      vim.keymap.set('n', '<leader>ls', require('dropbar.api').pick, { desc = '[s]ymbols' })
-    end,
-  },
-
   { -- terminal
     'akinsho/toggleterm.nvim',
+    enabled = false,
     opts = {
       open_mapping = [[<c-\>]],
       direction = 'float',
     },
-  },
-
-  { -- show diagnostics list
-    -- PERF: Slows down insert mode if open and there are many diagnostics
-    'folke/trouble.nvim',
-    enabled = false,
-    config = function()
-      local trouble = require 'trouble'
-      trouble.setup {}
-      local function next()
-        trouble.next { skip_groups = true, jump = true }
-      end
-      local function previous()
-        trouble.previous { skip_groups = true, jump = true }
-      end
-      vim.keymap.set('n', ']t', next, { desc = 'next [t]rouble item' })
-      vim.keymap.set('n', '[t', previous, { desc = 'previous [t]rouble item' })
-    end,
   },
 
   { -- highlight markdown headings and code blocks etc.
@@ -326,114 +270,4 @@ return {
     },
   },
 
-  { -- show images in nvim!
-    '3rd/image.nvim',
-    enabled = true,
-    dev = false,
-    -- fix to commit to keep using the rockspeck for image magick
-    ft = { 'markdown', 'quarto', 'vimwiki' },
-    cond = function()
-      -- Disable on Windows system
-      return vim.fn.has 'win32' ~= 1
-    end,
-    dependencies = {
-      'leafo/magick', -- that's a lua rock
-    },
-    config = function()
-      -- Requirements
-      -- https://github.com/3rd/image.nvim?tab=readme-ov-file#requirements
-      -- check for dependencies with `:checkhealth kickstart`
-      -- needs:
-      -- sudo apt install imagemagick
-      -- sudo apt install libmagickwand-dev
-      -- sudo apt install liblua5.1-0-dev
-      -- sudo apt install lua5.1
-      -- sudo apt install luajit
-
-      local image = require 'image'
-      image.setup {
-        backend = 'kitty',
-        integrations = {
-          markdown = {
-            enabled = true,
-            only_render_image_at_cursor = true,
-            only_render_image_at_cursor_mode = "popup",
-            filetypes = { 'markdown', 'vimwiki', 'quarto' },
-          },
-        },
-        editor_only_render_when_focused = false,
-        window_overlap_clear_enabled = true,
-        tmux_show_only_in_active_window = true,
-        max_width = nil,
-        max_height = nil,
-        max_width_window_percentage = nil,
-        max_height_window_percentage = 30,
-        kitty_method = 'normal',
-      }
-
-      local function clear_all_images()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local images = image.get_images { buffer = bufnr }
-        for _, img in ipairs(images) do
-          img:clear()
-        end
-      end
-
-      local function get_image_at_cursor(buf)
-        local images = image.get_images { buffer = buf }
-        local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-        for _, img in ipairs(images) do
-          if img.geometry ~= nil and img.geometry.y == row then
-            local og_max_height = img.global_state.options.max_height_window_percentage
-            img.global_state.options.max_height_window_percentage = nil
-            return img, og_max_height
-          end
-        end
-        return nil
-      end
-
-      local create_preview_window = function(img, og_max_height)
-        local buf = vim.api.nvim_create_buf(false, true)
-        local win_width = vim.api.nvim_get_option_value('columns', {})
-        local win_height = vim.api.nvim_get_option_value('lines', {})
-        local win = vim.api.nvim_open_win(buf, true, {
-          relative = 'editor',
-          style = 'minimal',
-          width = win_width,
-          height = win_height,
-          row = 0,
-          col = 0,
-          zindex = 1000,
-        })
-        vim.keymap.set('n', 'q', function()
-          vim.api.nvim_win_close(win, true)
-          img.global_state.options.max_height_window_percentage = og_max_height
-        end, { buffer = buf })
-        return { buf = buf, win = win }
-      end
-
-      local handle_zoom = function(bufnr)
-        local img, og_max_height = get_image_at_cursor(bufnr)
-        if img == nil then
-          return
-        end
-
-        local preview = create_preview_window(img, og_max_height)
-        image.hijack_buffer(img.path, preview.win, preview.buf)
-      end
-
-      vim.keymap.set('n', '<leader>io', function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        handle_zoom(bufnr)
-      end, { buffer = true, desc = 'image [o]pen' })
-
-      vim.keymap.set('n', '<leader>ic', clear_all_images, { desc = 'image [c]lear' })
-    end,
-  },
-
-  { -- interface with databases
-    'tpope/vim-dadbod',
-    'kristijanhusak/vim-dadbod-completion',
-    'kristijanhusak/vim-dadbod-ui',
-  },
 }
