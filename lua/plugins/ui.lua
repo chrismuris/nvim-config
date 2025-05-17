@@ -22,18 +22,6 @@ return {
     end,
   },
 
-  { -- nice quickfix list
-    'stevearc/quicker.nvim',
-    event = 'FileType qf',
-    opts = {
-      winfixheight = false,
-      wrap = true,
-    },
-  },
-  -- { -- more qf improvements
-  --   'romainl/vim-qf'
-  -- },
-
   -- telescope
   -- a nice seletion UI also to find and open files
   {
@@ -168,63 +156,9 @@ return {
     opts = { signs = false },
   },
 
-  { -- edit the file system as a buffer
-    'stevearc/oil.nvim',
-    opts = {
-      keymaps = {
-        ['<C-s>'] = false,
-        ['<C-h>'] = false,
-        ['<C-l>'] = false,
-      },
-      view_options = {
-        show_hidden = true,
-      },
-    },
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    keys = {
-      { '-', ':Oil<cr>', desc = 'oil' },
-      { '<leader>ef', ':Oil<cr>', desc = 'edit [f]iles' },
-    },
-    cmd = 'Oil',
-  },
-
-  { -- statusline
-    -- PERF: I found this to slow down the editor
-    'nvim-lualine/lualine.nvim',
-    enabled = false,
-    config = function()
-      local function macro_recording()
-        local reg = vim.fn.reg_recording()
-        if reg == '' then
-          return ''
-        end
-        return '📷[' .. reg .. ']'
-      end
-
-      ---@diagnostic disable-next-line: undefined-field
-      require('lualine').setup {
-        options = {
-          section_separators = '',
-          component_separators = '',
-          globalstatus = true,
-        },
-        sections = {
-          lualine_a = { 'mode', macro_recording },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
-          -- lualine_b = {},
-          lualine_c = { 'searchcount' },
-          lualine_x = { 'filetype' },
-          lualine_y = { 'progress' },
-          lualine_z = { 'location' },
-        },
-        extensions = { 'nvim-tree' },
-      }
-    end,
-  },
-
   { -- nicer-looking tabs with close icons
     'nanozuki/tabby.nvim',
-    enabled = false,
+    enabled = true,
     config = function()
       require('tabby.tabline').use_preset 'tab_only'
     end,
@@ -240,19 +174,7 @@ return {
 
   { -- highlight occurences of current word
     'RRethy/vim-illuminate',
-    enabled = false,
-  },
-
-  {
-    'NStefan002/screenkey.nvim',
-    lazy = false,
-    opts = {
-      win_opts = {
-        row = 1,
-        col = vim.o.columns - 1,
-        anchor = 'NE',
-      },
-    },
+    enabled = true,
   },
 
   { -- filetree
@@ -325,6 +247,11 @@ return {
         },
       },
     },
+  },
+
+  { 'echasnovski/mini.files', 
+    enabled = true,
+    version = '*'
   },
 
   { -- or show symbols in the current file as breadcrumbs
