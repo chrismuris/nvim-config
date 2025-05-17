@@ -1,7 +1,7 @@
 return {
 
   -- telescope
-  -- a nice seletion UI also to find and open files
+  -- a nice selection UI also to find and open files
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {
